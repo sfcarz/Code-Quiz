@@ -11,7 +11,7 @@ $(document).ready(function () {
     const $todoList = $('#todo-list');
     const $submit = $('#submit')
 
-    let StartingMin = .5;
+    let StartingMin = 1.5;
     let MinToSec = StartingMin * 60;
     let resetTimer;
     let score = localStorage.getItem("score");
@@ -40,7 +40,7 @@ $(document).ready(function () {
         $choices.removeClass('hide');
         showQuestion();
         shufflingQuestion = question.sort(function() {return Math.random() - .5});
-        console.log(shufflingQuestion);
+        // console.log(shufflingQuestion);
     };
 
     function showQuestion() {
@@ -66,9 +66,9 @@ $(document).ready(function () {
         if(right) {
             score++;
             localStorage.setItem("Score: ", score);
-            console.log(score);
+            // console.log(score);
         } else {
-            console.log('wrong');
+            // console.log('wrong');
             MinToSec = MinToSec - 15;
             score--;
             localStorage.setItem("Score: ", score);
@@ -138,6 +138,23 @@ $(document).ready(function () {
                 { text: 'Randomize any parameter given to it?', correct: true },
                 { text: 'Adds every other number?', correct: false },
             ]
+        },
+        {
+            quizQuestion: 'What do curly brackets create?',
+            answer: [
+                { text: 'Create an Object?', correct: true },
+                { text: 'Create an Array?', correct: false },
+                { text: 'None of the Above?', correct: false }
+            ]
+        },
+        {
+            quizQuestion: 'What does the % return?',
+            answer: [
+                { text: 'Turn a number into a percentage?', correct: false },
+                { text: 'Divide the number you assign and returns the remainder?', correct: true },
+                { text: 'Divide the number by it self?', correct: false },
+                { text: 'All the above?', correct: false }
+            ]
         }
     ];
 
@@ -147,16 +164,13 @@ $(document).ready(function () {
 
     $submit.on('click', function(event) {
         event.preventDefault();
-
         const userName = $form.val().trim();
-
         localStorage.setItem('User Name:', JSON.stringify(userName));
         if (!scores) {
             scores = []
         }
         scores.push({userName: userName, score: score});
         localStorage.setItem('scores', JSON.stringify(scores));
-
         if (userName === null ) {
             HSName.push(userName);
         };
@@ -164,12 +178,16 @@ $(document).ready(function () {
             return
         };
         $form.val('');
-
-        const $li = $('<li>');
-        $li.text(userName + ' : ' + `${score}`);
-        $todoList.append($li);
-        console.log(userName);
+        for (let i = 0; i < scores.length; i++) {
+            const scoresLength = scores[i];
+            const userText = scoresLength.userName;
+            const userScore = scoresLength.score
+            console.log(userText);
+            console.log(userScore);
+            const li = $('<li>').text(`${userText}: ${userScore}`)
+            $todoList.prepend(li);
+        }
+    
     });
 
 });
- 
