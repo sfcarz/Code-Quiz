@@ -15,8 +15,10 @@ $(document).ready(function () {
     let MinToSec = StartingMin * 60;
     let resetTimer;
     let score = localStorage.getItem("score");
+    let scores = JSON.parse(localStorage.getItem('scores'))
     let currentQuestion = 0;
     let HSName = [];
+    let shufflingQuestion;
     
     function countDown() {
         let minutes = Math.floor(MinToSec / 60)
@@ -37,8 +39,8 @@ $(document).ready(function () {
         $question.removeClass('hide');
         $choices.removeClass('hide');
         showQuestion();
-        shufflingQuestion = question.sort(function() { Math.random() - .5});
-   
+        shufflingQuestion = question.sort(function() {return Math.random() - .5});
+        console.log(shufflingQuestion);
     };
 
     function showQuestion() {
@@ -61,8 +63,6 @@ $(document).ready(function () {
     };
 
     function answerSelection(right) {
-        $userScore.text(`Score: ${score}`);
-        $todoCount.text(`${score}`);
         if(right) {
             score++;
             localStorage.setItem("Score: ", score);
@@ -80,6 +80,9 @@ $(document).ready(function () {
         if(right) {
             next()
         }
+        $userScore.text(`Score: ${score}`);
+        $todoCount.text(`${score}`);
+
     };  
 
     function next() {
@@ -148,6 +151,11 @@ $(document).ready(function () {
         const userName = $form.val().trim();
 
         localStorage.setItem('User Name:', JSON.stringify(userName));
+        if (!scores) {
+            scores = []
+        }
+        scores.push({userName: userName, score: score});
+        localStorage.setItem('scores', JSON.stringify(scores));
 
         if (userName === null ) {
             HSName.push(userName);
