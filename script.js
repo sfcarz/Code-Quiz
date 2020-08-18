@@ -164,11 +164,14 @@ $(document).ready(function () {
 
     $submit.on('click', function(event) {
         event.preventDefault();
+
         const userName = $form.val().trim();
+        console.log(userName);
         localStorage.setItem('User Name:', JSON.stringify(userName));
         if (!scores) {
             scores = []
         }
+
         scores.push({userName: userName, score: score});
         localStorage.setItem('scores', JSON.stringify(scores));
         if (userName === null ) {
@@ -177,16 +180,20 @@ $(document).ready(function () {
         if (userName == '') {
             return
         };
+
         $form.val('');
+        
         for (let i = 0; i < scores.length; i++) {
             const scoresLength = scores[i];
             const userText = scoresLength.userName;
             const userScore = scoresLength.score
-            console.log(userText);
-            console.log(userScore);
+            // console.log(userText);
+            // console.log(userScore);
             const li = $('<li>').text(`${userText}: ${userScore}`)
             $todoList.prepend(li);
         }
+
+        
     
     });
 
